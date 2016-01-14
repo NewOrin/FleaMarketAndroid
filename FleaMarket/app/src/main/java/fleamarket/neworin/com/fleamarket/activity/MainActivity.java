@@ -1,90 +1,145 @@
 package fleamarket.neworin.com.fleamarket.activity;
 
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentTransaction;
+import android.app.AlertDialog;
+import android.app.Fragment;
+import android.app.FragmentManager;
+import android.app.FragmentTransaction;
+import android.content.DialogInterface;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
+import android.view.KeyEvent;
 import android.view.View;
-import java.util.HashMap;
+import android.widget.TextView;
 
-import cn.smssdk.EventHandler;
-import cn.smssdk.SMSSDK;
-import cn.smssdk.gui.RegisterPage;
 import fleamarket.neworin.com.fleamarket.R;
 import fleamarket.neworin.com.fleamarket.fragment.LoginFragment;
 import fleamarket.neworin.com.fleamarket.fragment.RegisterFragment;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements FragmentManager.OnBackStackChangedListener {
 
-    private String app_key = "ea28ef597102";
-    private String app_secret = "d08b7d02a565ace684d4357be1884f43";
+    private Fragment currentFragment;//存放当前的Fragment
+    private Fragment getCurrentFragment;//用于比较当前Fragment
+    private TextView tv_left, tv_title;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        getSupportActionBar().hide();
         setContentView(R.layout.activity_main);
-        //初始化SMSSDK
-        SMSSDK.initSDK(this, app_key, app_secret);
-        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-        transaction.add(R.id.fragment_container, new LoginFragment());
-        transaction.commit();
+        initFragment();
         initView();
         initEvent();
-
     }
 
     private void initEvent() {
     }
 
-    private void initView() {
+    /**
+     * 显示第一个Fragment
+     */
+    private void initFragment() {
+        currentFragment = new LoginFragment();
+        getFragmentManager().beginTransaction().add(R.id.fragment_container, currentFragment).commit();
     }
 
+    /**
+     * 初始化View
+     */
+    private void initView() {
+        tv_left = (TextView) findViewById(R.id.tv_left);
+        tv_title = (TextView) findViewById(R.id.tv_title);
+    }
 
+    /**
+     * 各个控件事件的监听
+     *
+     * @param v
+     */
     public void doClick(View v) {
         switch (v.getId()) {
             case R.id.tv_register:
-                switchFragment(R.id.layout_login, new RegisterFragment());
+                nextFragment(true, new RegisterFragment());
+//                switchFragment(new RegisterFragment());
                 break;
             case R.id.btn_login:
-                Log.d("NewOrin", "Work");
-                //显示手机号
-                RegisterPage registerPage = new RegisterPage();
-                //注册回调事件
-                registerPage.setRegisterCallback(new EventHandler() {
-                    //事件完成后调用
-                    @Override
-                    public void afterEvent(int event, int result, Object data) {
-                        //判断结果是否已经完成
-                        if (result == SMSSDK.RESULT_COMPLETE) {
-                            //获取数据data
-                            HashMap<String, Object> maps = (HashMap<String, Object>) data;
-                            //国家，手机号(信息)
-                            String country = (String) maps.get("country");
-                            String phone = (String) maps.get("phone");
-                            submitUserInfo(country, phone);
-                        }
-                        //获取数据
-                    }
-                });
-                //显示注册界面
-                registerPage.show(this);
                 break;
+            case R.id.tv_left:
+                FragmentManager fragmentManager = getFragmentManager();
+                fragmentManager.popBackStack();
         }
     }
 
     /**
-     * 提交用户信息
+     * 切换Fragment
      *
-     * @param country
-     * @param phone
+     * @param fragment
      */
-    public void submitUserInfo(String country, String phone) {
-        SMSSDK.submitUserInfo("023", "NewOrin", null, country, phone);
+    private void switchFragment(Fragment fragment) {
+        if (currentFragment != fragment) {
+            FragmentTransaction transaction = getFragmentManager().beginTransaction();
+            if (!fragment.isAdded()) {
+                transaction.hide(currentFragment).replace(R.id.fragment_container, fragment).commit();
+            } else {
+                transaction.hide(currentFragment).show(fragment).commit();
+            }
+            currentFragment = fragment;
+        }
     }
 
-    private void switchFragment(int containerViewId, Fragment fragment) {
-        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-        transaction.replace(containerViewId, fragment).commit();
+
+    /**
+     * 退出确认对话框
+     */
+    private void confirmExitDialog() {
+        new AlertDialog.Builder(this).setTitle("确认").setMessage("确认退出?").setPositiveButton("确认", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                finish();//退出程序
+            }
+        }).setNegativeButton("取消", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+            }
+        }).show();
+    }
+
+    @Override
+    public void onBackStackChanged() {
+        getCurrentFragment = getFragmentManager().findFragmentById(R.id.fragment_container);
+        if (getCurrentFragment instanceof LoginFragment) {
+            tv_title.setText("登录");
+            tv_left.setVisibility(View.GONE);
+        } else if (getCurrentFragment instanceof RegisterFragment) {
+            tv_left.setVisibility(View.VISIBLE);
+            tv_title.setText("注册");
+        }
+    }
+
+    //创建新的Fragment对象，如果backStackFlag属性为true，会将该对象添加到回退栈当中
+    private void nextFragment(boolean backStackFlag, Fragment fragment) {
+        FragmentManager manager = getFragmentManager();
+        FragmentTransaction transaction = manager.beginTransaction();
+        if (!fragment.isAdded()) {
+            transaction.hide(currentFragment).replace(R.id.fragment_container, fragment);
+        } else {
+            transaction.hide(currentFragment).show(fragment);
+        }
+        currentFragment = fragment;
+        if (backStackFlag) {
+            //将当前Fragment的状态添加到回退栈中
+            transaction.addToBackStack(null);
+            transaction.commit();
+            //指定回退栈监听器
+            manager.addOnBackStackChangedListener(this);
+        }
+    }
+
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        if (keyCode == event.KEYCODE_BACK) {
+            confirmExitDialog();
+        }
+        return super.onKeyDown(keyCode, event);
     }
 }
