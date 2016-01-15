@@ -11,8 +11,13 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 
-import cn.smssdk.EventHandler;
-import cn.smssdk.SMSSDK;
+import cn.bmob.v3.Bmob;
+import cn.bmob.v3.BmobSMS;
+import cn.bmob.v3.BmobUser;
+import cn.bmob.v3.exception.BmobException;
+import cn.bmob.v3.listener.RequestSMSCodeListener;
+import cn.bmob.v3.listener.SaveListener;
+import cn.bmob.v3.listener.VerifySMSCodeListener;
 import fleamarket.neworin.com.fleamarket.R;
 import fleamarket.neworin.com.fleamarket.util.AppUtil;
 import fleamarket.neworin.com.fleamarket.util.ClearEditText;
@@ -45,21 +50,7 @@ public class RegisterFragment extends Fragment implements View.OnClickListener {
         super.onActivityCreated(savedInstanceState);
         initView();
         initEvent();
-        SMSSDK.initSDK(getActivity(), Constant.APP_KEY, Constant.APP_SECRET);//初始化SMSSDK
-
-        //事件调用监听类
-        EventHandler eventHandler = new EventHandler() {
-            //事件执行后调用
-            @Override
-            public void afterEvent(int event, int result, Object data) {
-                super.afterEvent(event, result, data);
-                if (result == SMSSDK.RESULT_COMPLETE) {
-                    Log.d("NewOrin", result + "验证成功!");
-                }
-            }
-        };
-        //注册回调接口
-        SMSSDK.registerEventHandler(eventHandler);
+        Bmob.initialize(getActivity(), Constant.APPLICATION_ID);
     }
 
     /**
@@ -97,8 +88,11 @@ public class RegisterFragment extends Fragment implements View.OnClickListener {
                 }
                 break;
             case R.id.btn_register:
-                getStrings();
-                validateCode(et_register_phone.getText().toString(), et_validate.getText().toString());
+                if (et_register_password1.getText().toString().equals(et_register_password2.getText().toString())) {
+                    validateCode(et_register_phone.getText().toString(), et_validate.getText().toString());
+                } else {
+                    AppUtil.showToast(getActivity(), "两次输入密码不一致");
+                }
                 break;
         }
     }
@@ -109,27 +103,59 @@ public class RegisterFragment extends Fragment implements View.OnClickListener {
      * @param phone
      */
     private void sendVerificaCode(String phone) {
-        SMSSDK.getVerificationCode("86", phone);
+        BmobSMS.requestSMSCode(getActivity(), phone, "注册模板", new RequestSMSCodeListener() {
+            @Override
+            public void done(Integer smsId, BmobException e) {
+                if (e == null) {//验证码发送成功
+                    Log.e("NewOrin", "短信id：" + smsId);//用于查询本次短信发送详情
+                }
+            }
+        });
     }
 
     /**
      * 校验验证码
      */
-    private void validateCode(String phone, String code) {
+    private void validateCode(final String phone, String code) {
         if (!TextUtils.isEmpty(code)) {
             Log.d("NewOrin", phone + "," + code);
-            SMSSDK.submitVerificationCode("86", phone, code);
+            //开始请求后台校验验证码
+            BmobSMS.verifySmsCode(getActivity(), phone, code, new VerifySMSCodeListener() {
+                @Override
+                public void done(BmobException ex) {
+                    if (ex == null) {//短信验证码已验证成功
+                        Log.d("NewOrin", "验证通过");
+                         doRegister(et_register_password1.getText().toString(), phone);
+                    } else {
+                        AppUtil.showToast(getActivity(), "验证码错误");
+                        Log.d("NewOrin", "验证失败：code =" + ex.getErrorCode() + ",msg = " + ex.getLocalizedMessage());
+                    }
+                }
+            });
         } else {
             AppUtil.showToast(getActivity(), "验证码不能为空");
         }
     }
 
-    /**
-     * 获取文本框内字符串
-     */
-    private void getStrings() {
-        password = et_validate.getText().toString();
+    private void doRegister(String password, String phone) {
+        BmobUser user = new BmobUser();
+        user.setUsername(phone);
+        user.setPassword(password);
+        user.setMobilePhoneNumber(phone);
+        user.signUp(getActivity(), new SaveListener() {
+            @Override
+            public void onSuccess() {
+                AppUtil.showToast(getActivity(), "注册成功！");
+
+            }
+
+            @Override
+            public void onFailure(int i, String s) {
+                AppUtil.showToast(getActivity(), "注册失败" + s);
+            }
+        });
     }
+
 
     /**
      * 通过继承CountDownTimer类实现倒计时
@@ -161,4 +187,5 @@ public class RegisterFragment extends Fragment implements View.OnClickListener {
             btn_validate.setBackgroundColor(Color.parseColor("#808000"));
         }
     }
+
 }

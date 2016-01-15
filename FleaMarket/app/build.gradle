@@ -23,7 +23,6 @@ dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
     testCompile 'junit:junit:4.12'
     compile 'com.android.support:appcompat-v7:23.1.1'
-    compile files('src/main/libs/SMSSDK-2.0.0.jar')
-    compile files('src/main/libs/MobCommons.jar')
-    compile files('src/main/libs/MobTools.jar')
+    //bmob-sdk ：Bmob的android sdk包
+    compile 'cn.bmob.android:bmob-sdk:3.4.5'
 }

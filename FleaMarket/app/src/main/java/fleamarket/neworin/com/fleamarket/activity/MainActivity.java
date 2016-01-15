@@ -11,11 +11,9 @@ import android.view.KeyEvent;
 import android.view.View;
 import android.widget.TextView;
 
-import cn.smssdk.SMSSDK;
-import fleamarket.neworin.com.fleamarket.R;
+ import fleamarket.neworin.com.fleamarket.R;
 import fleamarket.neworin.com.fleamarket.fragment.LoginFragment;
 import fleamarket.neworin.com.fleamarket.fragment.RegisterFragment;
-import fleamarket.neworin.com.fleamarket.util.Constant;
 
 public class MainActivity extends AppCompatActivity implements FragmentManager.OnBackStackChangedListener {
 
