@@ -2,6 +2,7 @@ package fleamarket.neworin.com.fleamarket.fragment;
 
 
 import android.app.Fragment;
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
@@ -9,6 +10,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.TextView;
 
 import cn.bmob.v3.Bmob;
 import cn.bmob.v3.BmobUser;
@@ -27,6 +29,7 @@ public class LoginFragment extends Fragment implements View.OnClickListener {
     private ClearEditText et_login_account, et_login_password;
     private Button btn_login;
     private String username, password;
+    private TextView tv_icon_account, tv_icon_password;
 
     public LoginFragment() {
         // Required empty public constructor
@@ -57,6 +60,18 @@ public class LoginFragment extends Fragment implements View.OnClickListener {
         et_login_account = (ClearEditText) view.findViewById(R.id.et_login_account);
         et_login_password = (ClearEditText) view.findViewById(R.id.et_login_password);
         btn_login = (Button) view.findViewById(R.id.btn_login);
+        tv_icon_account = (TextView) view.findViewById(R.id.tv_icon_account);
+        tv_icon_password = (TextView) view.findViewById(R.id.tv_icon_password);
+        setIcon();
+    }
+
+    /**
+     * 给TextView指定文字
+     */
+    private void setIcon() {
+        Typeface iconfont = Typeface.createFromAsset(getActivity().getAssets(), "font/iconfont.ttf");
+        tv_icon_account.setTypeface(iconfont);
+        tv_icon_password.setTypeface(iconfont);
     }
 
     @Override

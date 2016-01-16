@@ -9,7 +9,7 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="50dp"
-        android:background="@android:color/holo_blue_bright">
+        android:background="@color/colorTitlebar">
 
         <TextView
             android:id="@+id/tv_left"
@@ -17,9 +17,10 @@
             android:layout_height="wrap_content"
             android:layout_alignParentLeft="true"
             android:layout_centerVertical="true"
-            android:layout_marginLeft="5dp"
+            android:layout_marginLeft="10dp"
             android:onClick="doClick"
             android:text="返回"
+            android:textColor="@color/colorText"
             android:textSize="18sp"
             android:visibility="gone" />
 
@@ -29,15 +30,17 @@
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
-            android:onClick="doClick" />
+            android:onClick="doClick"
+
+            android:textColor="@color/colorText" />
 
         <TextView
             android:id="@+id/tv_title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
-            android:text="登录"
-            android:textColor="@android:color/white"
+            android:text="登 录"
+            android:textColor="@color/colorText"
             android:textSize="20sp" />
     </RelativeLayout>
 

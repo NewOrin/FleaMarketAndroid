@@ -3,4 +3,9 @@
     <color name="colorPrimary">#3F51B5</color>
     <color name="colorPrimaryDark">#303F9F</color>
     <color name="colorAccent">#FF4081</color>
+    <color name="colorTitlebar">#FF0000</color>
+    <color name="colorText">#FFFFFF</color>
+    <color name="red">#FF0000</color>
+    <color name="red_shadow">#FFB9B9</color>
+    <color name="red_pressed">#AA0000</color>
 </resources>

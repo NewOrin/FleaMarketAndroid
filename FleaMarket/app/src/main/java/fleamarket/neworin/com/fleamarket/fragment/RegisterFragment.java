@@ -125,7 +125,7 @@ public class RegisterFragment extends Fragment implements View.OnClickListener {
                 public void done(BmobException ex) {
                     if (ex == null) {//短信验证码已验证成功
                         Log.d("NewOrin", "验证通过");
-                         doRegister(et_register_password1.getText().toString(), phone);
+                        doRegister(et_register_password1.getText().toString(), phone);
                     } else {
                         AppUtil.showToast(getActivity(), "验证码错误");
                         Log.d("NewOrin", "验证失败：code =" + ex.getErrorCode() + ",msg = " + ex.getLocalizedMessage());
