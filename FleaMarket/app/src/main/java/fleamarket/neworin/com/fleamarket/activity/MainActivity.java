@@ -13,7 +13,6 @@ import android.provider.MediaStore;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.Toast;
 
@@ -21,18 +20,13 @@ import com.bmob.BTPFileResponse;
 import com.bmob.BmobProFile;
 import com.bmob.btp.callback.UploadListener;
 
-import java.io.File;
 import java.io.FileNotFoundException;
 
-import cn.bmob.v3.Bmob;
 import cn.bmob.v3.datatype.BmobFile;
-import cn.bmob.v3.listener.UploadFileListener;
 import fleamarket.neworin.com.fleamarket.R;
 import fleamarket.neworin.com.fleamarket.fragment.HomeFragment;
 import fleamarket.neworin.com.fleamarket.fragment.MeFragment;
 import fleamarket.neworin.com.fleamarket.fragment.PublishFragment;
-import fleamarket.neworin.com.fleamarket.util.AppUtil;
-import fleamarket.neworin.com.fleamarket.util.Constant;
 
 public class MainActivity extends AppCompatActivity {
 
