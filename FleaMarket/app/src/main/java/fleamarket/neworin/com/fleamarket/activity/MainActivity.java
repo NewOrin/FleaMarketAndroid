@@ -1,72 +1,76 @@
 package fleamarket.neworin.com.fleamarket.activity;
 
-import android.app.AlertDialog;
 import android.app.Fragment;
-import android.app.FragmentManager;
 import android.app.FragmentTransaction;
-import android.content.DialogInterface;
-import android.support.v7.app.AppCompatActivity;
+import android.content.ContentResolver;
+import android.content.Intent;
+import android.database.Cursor;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.net.Uri;
 import android.os.Bundle;
-import android.view.KeyEvent;
+import android.provider.MediaStore;
+import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
-import android.widget.TextView;
+import android.widget.Button;
+import android.widget.ImageView;
+import android.widget.Toast;
 
- import fleamarket.neworin.com.fleamarket.R;
-import fleamarket.neworin.com.fleamarket.fragment.LoginFragment;
-import fleamarket.neworin.com.fleamarket.fragment.RegisterFragment;
+import com.bmob.BTPFileResponse;
+import com.bmob.BmobProFile;
+import com.bmob.btp.callback.UploadListener;
 
-public class MainActivity extends AppCompatActivity implements FragmentManager.OnBackStackChangedListener {
+import java.io.File;
+import java.io.FileNotFoundException;
 
-    private Fragment currentFragment;//存放当前的Fragment
-    private Fragment getCurrentFragment;//用于比较当前Fragment
-    private TextView tv_left, tv_title;
+import cn.bmob.v3.Bmob;
+import cn.bmob.v3.datatype.BmobFile;
+import cn.bmob.v3.listener.UploadFileListener;
+import fleamarket.neworin.com.fleamarket.R;
+import fleamarket.neworin.com.fleamarket.fragment.HomeFragment;
+import fleamarket.neworin.com.fleamarket.fragment.MeFragment;
+import fleamarket.neworin.com.fleamarket.fragment.PublishFragment;
+import fleamarket.neworin.com.fleamarket.util.AppUtil;
+import fleamarket.neworin.com.fleamarket.util.Constant;
+
+public class MainActivity extends AppCompatActivity {
+
+    private ImageView image;
+    private final int RESULT = 1;
+    Bitmap bitmap;
+    private String photoPath;
+
+    private Fragment currentFragment;//用于存放当前Fragment
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        getSupportActionBar().hide();
         setContentView(R.layout.activity_main);
         initFragment();
         initView();
-        initEvent();
-
     }
 
-    private void initEvent() {
-    }
-
-    /**
-     * 显示第一个Fragment
-     */
     private void initFragment() {
-        currentFragment = new LoginFragment();
-        getFragmentManager().beginTransaction().add(R.id.fragment_container, currentFragment).commit();
+        currentFragment = new HomeFragment();
+        getFragmentManager().beginTransaction().add(R.id.main_fragment_container, currentFragment).commit();
     }
 
-    /**
-     * 初始化View
-     */
     private void initView() {
-        tv_left = (TextView) findViewById(R.id.tv_left);
-        tv_title = (TextView) findViewById(R.id.tv_title);
+
     }
 
-    /**
-     * 各个控件事件的监听
-     *
-     * @param v
-     */
-    public void doClick(View v) {
+    public void doTabClick(View v) {
         switch (v.getId()) {
-            case R.id.tv_register:
-                nextFragment(true, new RegisterFragment());
-//                switchFragment(new RegisterFragment());
+            case R.id.tab_main:
+                switchFragment(new HomeFragment());
                 break;
-            case R.id.btn_login:
+            case R.id.tab_publish:
+                switchFragment(new PublishFragment());
                 break;
-            case R.id.tv_left:
-                FragmentManager fragmentManager = getFragmentManager();
-                fragmentManager.popBackStack();
+            case R.id.tab_me:
+                switchFragment(new MeFragment());
+                break;
         }
     }
 
@@ -79,7 +83,7 @@ public class MainActivity extends AppCompatActivity implements FragmentManager.O
         if (currentFragment != fragment) {
             FragmentTransaction transaction = getFragmentManager().beginTransaction();
             if (!fragment.isAdded()) {
-                transaction.hide(currentFragment).replace(R.id.fragment_container, fragment).commit();
+                transaction.hide(currentFragment).replace(R.id.main_fragment_container, fragment).commit();
             } else {
                 transaction.hide(currentFragment).show(fragment).commit();
             }
@@ -87,60 +91,105 @@ public class MainActivity extends AppCompatActivity implements FragmentManager.O
         }
     }
 
+    /**
+     * 从图库中获取图片
+     */
+    private void getImage() {
+        Intent intent = new Intent(Intent.ACTION_PICK);
+        intent.setType("image/*");
+        startActivityForResult(intent, RESULT);
+    }
 
     /**
-     * 退出确认对话框
+     * 重写该方法用于获得重要信息
+     *
+     * @param requestCode
+     * @param resultCode
+     * @param data
      */
-    private void confirmExitDialog() {
-        new AlertDialog.Builder(this).setTitle("确认").setMessage("确认退出?").setPositiveButton("确认", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                finish();//退出程序
-            }
-        }).setNegativeButton("取消", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                dialog.dismiss();
-            }
-        }).show();
-    }
-
     @Override
-    public void onBackStackChanged() {
-        getCurrentFragment = getFragmentManager().findFragmentById(R.id.fragment_container);
-        if (getCurrentFragment instanceof LoginFragment) {
-            tv_title.setText("登录");
-            tv_left.setVisibility(View.GONE);
-        } else if (getCurrentFragment instanceof RegisterFragment) {
-            tv_left.setVisibility(View.VISIBLE);
-            tv_title.setText("注册");
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (resultCode != RESULT_OK) {
+            Log.d("NewOrin", "Error");
+            return;
+        }
+        if (resultCode == RESULT_OK) {
+//            showPhoto1(data);
+            showPhoto2(data);
         }
     }
 
-    //创建新的Fragment对象，如果backStackFlag属性为true，会将该对象添加到回退栈当中
-    private void nextFragment(boolean backStackFlag, Fragment fragment) {
-        FragmentManager manager = getFragmentManager();
-        FragmentTransaction transaction = manager.beginTransaction();
-        if (!fragment.isAdded()) {
-            transaction.hide(currentFragment).replace(R.id.fragment_container, fragment);
-        } else {
-            transaction.hide(currentFragment).show(fragment);
+    /**
+     * 处理图片方法1，
+     * 直接处理返回的图片是被系统压缩过的，不过自己在测试的过程并没有区别；
+     * 如果用户不断的重新获取图片的话，必须把现在的Bmp内存释放，否则会报错！ bmp.recycle()。
+     *
+     * @param requestCode
+     * @param resultCode
+     * @param data
+     */
+    private void showPhoto1(Intent data) {
+        //选择图片
+        Uri uri = data.getData();
+        ContentResolver cr = this.getContentResolver();
+        if (bitmap != null) {
+            bitmap.recycle();
         }
-        currentFragment = fragment;
-        if (backStackFlag) {
-            //将当前Fragment的状态添加到回退栈中
-            transaction.addToBackStack(null);
-            transaction.commit();
-            //指定回退栈监听器
-            manager.addOnBackStackChangedListener(this);
+        try {
+            bitmap = BitmapFactory.decodeStream(cr.openInputStream(uri));
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
         }
+
+        image.setImageBitmap(bitmap);
     }
 
-    @Override
-    public boolean onKeyDown(int keyCode, KeyEvent event) {
-        if (keyCode == event.KEYCODE_BACK) {
-            confirmExitDialog();
+    /**
+     * 处理图片，方法二，获得图片的地址再处理
+     *
+     * @param requestCode
+     * @param resultCode
+     * @param data
+     */
+    private void showPhoto2(Intent data) {
+        Uri uri = data.getData();
+        String[] proj = {MediaStore.Images.Media.DATA};
+        Cursor cursor = managedQuery(uri, proj, null, null, null);
+        int column_index = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
+        cursor.moveToFirst();
+        photoPath = cursor.getString(column_index);
+        bitmap = BitmapFactory.decodeFile(photoPath);
+        Log.d("NewOrin", "图片路径是:" + photoPath);
+        image.setImageBitmap(bitmap);
+    }
+
+    /**
+     * 上传图片
+     */
+    private void uploadPhoto() {
+        if (photoPath.equals("")) {
+            Log.d("NewOrin", "photoPath为空");
+            return;
         }
-        return super.onKeyDown(keyCode, event);
+
+        BTPFileResponse response = BmobProFile.getInstance(this).upload(photoPath, new UploadListener() {
+            @Override
+            public void onSuccess(String fileName, String url, BmobFile bmobFile) {
+                Log.d("NewOrin", "文件上传成功：" + fileName + ",可访问的文件地址：" + bmobFile.getUrl());
+                Toast.makeText(MainActivity.this, "上传成功", Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public void onProgress(int progress) {
+                Log.d("NewOrin", "onProgress :" + progress);
+            }
+
+            @Override
+            public void onError(int statuscode, String errormsg) {
+                Log.d("NewOrin", "文件上传失败：" + errormsg);
+                Toast.makeText(MainActivity.this, "文件上传失败", Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 }
