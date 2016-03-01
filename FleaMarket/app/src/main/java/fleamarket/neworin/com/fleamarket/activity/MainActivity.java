@@ -9,7 +9,9 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Handler;
 import android.provider.MediaStore;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
@@ -28,7 +30,7 @@ import fleamarket.neworin.com.fleamarket.fragment.HomeFragment;
 import fleamarket.neworin.com.fleamarket.fragment.MeFragment;
 import fleamarket.neworin.com.fleamarket.fragment.PublishFragment;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements SwipeRefreshLayout.OnRefreshListener {
 
     private ImageView image;
     private final int RESULT = 1;
@@ -36,6 +38,7 @@ public class MainActivity extends AppCompatActivity {
     private String photoPath;
 
     private Fragment currentFragment;//用于存放当前Fragment
+    private SwipeRefreshLayout swipe_layout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,7 +46,8 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         initFragment();
         initView();
-    }
+        swipe_layout.setOnRefreshListener(this);
+     }
 
     private void initFragment() {
         currentFragment = new HomeFragment();
@@ -51,7 +55,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void initView() {
-
+        swipe_layout = (SwipeRefreshLayout) findViewById(R.id.swipe_layout);
     }
 
     public void doTabClick(View v) {
@@ -185,5 +189,15 @@ public class MainActivity extends AppCompatActivity {
                 Toast.makeText(MainActivity.this, "文件上传失败", Toast.LENGTH_SHORT).show();
             }
         });
+    }
+
+    @Override
+    public void onRefresh() {
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                swipe_layout.setRefreshing(false);
+            }
+        }, 3000);
     }
 }

@@ -1,10 +1,10 @@
 package fleamarket.neworin.com.fleamarket.fragment;
 
-
 import android.app.Fragment;
 import android.content.Context;
 import android.os.Bundle;
 import android.util.DisplayMetrics;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,11 +14,17 @@ import android.widget.LinearLayout;
 import com.android.volley.toolbox.ImageLoader;
 import com.jorge.circlelibrary.ImageCycleView;
 
+import org.json.JSONArray;
+
 import java.util.ArrayList;
 
+import cn.bmob.v3.BmobQuery;
+import cn.bmob.v3.listener.FindCallback;
 import fleamarket.neworin.com.fleamarket.R;
 import fleamarket.neworin.com.fleamarket.bean.ImageCycle;
+import fleamarket.neworin.com.fleamarket.util.AnalyseData;
 import fleamarket.neworin.com.fleamarket.util.BitmapCache;
+import fleamarket.neworin.com.fleamarket.net.GetNetDataUtil;
 import fleamarket.neworin.com.fleamarket.util.MyApplication;
 
 /**
@@ -28,6 +34,7 @@ public class HomeFragment extends Fragment {
 
     private ImageCycleView image_cycle;
     private View view;
+    private ArrayList<ImageCycle> imageList;
 
     public HomeFragment() {
         // Required empty public constructor
@@ -45,7 +52,7 @@ public class HomeFragment extends Fragment {
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         initView();
-        setImageData();
+        queryData(getActivity(), "ImageCycle");
     }
 
     /**
@@ -60,15 +67,13 @@ public class HomeFragment extends Fragment {
      */
     private void setImageData() {
         ArrayList<String> imageDescList = new ArrayList<>();
-        imageDescList.add("小仓柚子");
-        imageDescList.add("抚媚妖娆性感美女");
-        imageDescList.add("热血沸腾");
-        imageDescList.add("台球美女");
         ArrayList<String> urlList = new ArrayList<>();
-        urlList.add("http://attach.bbs.miui.com/forum/month_1012/101203122706c89249c8f58fcc.jpg");
-        urlList.add("http://bbsdown10.cnmo.com/attachments/201308/06/091441rn5ww131m0gj55r0.jpg");
-        urlList.add("http://kuoo8.com/wall_up/hsf2288/200801/2008012919460743597.jpg");
-        urlList.add("http://d.3987.com/taiqiumein_141001/007.jpg");
+        for (int i = 0; i < imageList.size(); i++) {
+            imageDescList.add(imageList.get(i).getImage_desc());
+            urlList.add(imageList.get(i).getImage_url());
+        }
+        Log.d("NewOrin", "imageDescList = " + imageDescList.toString());
+        Log.d("NewOrin", "urlList = " + urlList.toString());
         initCarsueView(imageDescList, urlList);
     }
 
@@ -97,7 +102,12 @@ public class HomeFragment extends Fragment {
         image_cycle.startImageCycle();
     }
 
-
+    /**
+     * 获取屏幕高度
+     *
+     * @param context
+     * @return
+     */
     private int getScreenHeight(Context context) {
         if (context == null) {
             return 0;
@@ -107,10 +117,39 @@ public class HomeFragment extends Fragment {
         return dm.heightPixels;
     }
 
+    /**
+     * 加载图片
+     *
+     * @param imageUrl
+     * @param imageView
+     */
     private void loadImageWithCache(String imageUrl, ImageView imageView) {
+
         ImageLoader loader = new ImageLoader(MyApplication.getHttpQueues(), new BitmapCache());
         ImageLoader.ImageListener listener = loader.getImageListener(imageView, R.mipmap.ic_launcher, R.mipmap.ic_launcher);
         //加载及缓存网络图片
         loader.get(imageUrl, listener);
+    }
+
+    /**
+     * 查询表的数据
+     *
+     * @param table
+     */
+    public void queryData(Context context, String table) {
+        BmobQuery query = new BmobQuery(table);
+        query.findObjects(context, new FindCallback() {
+            @Override
+            public void onSuccess(JSONArray jsonArray) {
+                Log.d("NewOrin", "获取成功" + jsonArray.toString());
+                imageList = AnalyseData.imageList(jsonArray);
+                setImageData();
+            }
+
+            @Override
+            public void onFailure(int i, String s) {
+                Log.d("NewOrin", "获取失败" + s);
+            }
+        });
     }
 }

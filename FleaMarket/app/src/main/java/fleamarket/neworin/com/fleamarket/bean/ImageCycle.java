@@ -1,9 +1,12 @@
 package fleamarket.neworin.com.fleamarket.bean;
 
+import cn.bmob.v3.BmobObject;
+
 /**
+ * 轮播图片信息
  * Created by NewOr on 2016/2/28.
  */
-public class ImageCycle {
+public class ImageCycle extends BmobObject {
     private String image_url;
     private String image_desc;
 
@@ -26,5 +29,13 @@ public class ImageCycle {
 
     public void setImage_desc(String image_desc) {
         this.image_desc = image_desc;
+    }
+
+    @Override
+    public String toString() {
+        return "ImageCycle{" +
+                "image_url='" + image_url + '\'' +
+                ", image_desc='" + image_desc + '\'' +
+                '}';
     }
 }
