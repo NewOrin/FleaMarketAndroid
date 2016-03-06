@@ -17,7 +17,7 @@
         android:layout_height="50dp"
         custom:leftText="返回"
         custom:leftTextColor="@color/red"
-        custom:myTitle="主页"
+        custom:myTitle="发布"
         custom:myTitleTextColor="@android:color/holo_green_dark"
         custom:myTitleTextSize="10sp"
         custom:rightTextColor="@color/red" />
@@ -26,12 +26,26 @@
         android:layout_width="match_parent"
         android:layout_height="40dp"
         android:layout_marginTop="10dp"
-        android:singleLine="true"
-        android:hint="标题" />
+        android:hint="标题"
+        android:singleLine="true" />
 
     <EditText
         android:layout_width="match_parent"
         android:layout_height="40dp"
         android:layout_marginTop="10dp"
         android:hint="描述一下你的闲置" />
+
+    <GridView
+        android:id="@+id/publish_gridview"
+        android:layout_width="match_parent"
+        android:layout_height="200dp"
+        android:layout_margin="10dp"
+        android:background="#EFDFDF"
+        android:clickable="true"
+        android:columnWidth="90dp"
+        android:gravity="center"
+        android:horizontalSpacing="5dp"
+        android:numColumns="4"
+        android:stretchMode="columnWidth"
+        android:verticalSpacing="5dp" />
 </LinearLayout>

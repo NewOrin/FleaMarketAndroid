@@ -1,4 +1,4 @@
-package fleamarket.neworin.com.fleamarket;
+package fleamarket.neworin.com.fleamarket.adapter;
 
 import android.content.Context;
 import android.view.LayoutInflater;
