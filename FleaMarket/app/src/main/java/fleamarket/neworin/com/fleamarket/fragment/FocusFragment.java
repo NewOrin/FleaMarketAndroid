@@ -1,23 +1,31 @@
 package fleamarket.neworin.com.fleamarket.fragment;
 
-import android.app.Fragment;
+
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import fleamarket.neworin.com.fleamarket.R;
 
-public class PublishFragment extends Fragment {
+/**
+ * A simple {@link Fragment} subclass.
+ */
+public class FocusFragment extends Fragment {
 
-    public PublishFragment() {
+    private View view;
+
+    public FocusFragment() {
         // Required empty public constructor
     }
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_publish, container, false);
+        return view = inflater.inflate(R.layout.fragment_focus, container, false);
     }
+
 }

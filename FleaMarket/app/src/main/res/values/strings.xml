@@ -2,6 +2,15 @@
     <string name="app_name">FleaMarket</string>
 
     <!-- TODO: Remove or change this placeholder text -->
-     <string name="icon_password">&#xe600;</string>
+    <string name="icon_password">&#xe600;</string>
     <string name="icon_account">&#xe602;</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+
+    <string name="title_activity_publish">发布</string>
+    <string name="dummy_button">Dummy Button</string>
+    <string name="dummy_content">DUMMY\nCONTENT</string>
+    <string name="title_item_list">Items</string>
+    <string name="title_item_detail">Item Detail</string>
 </resources>

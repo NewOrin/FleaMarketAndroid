@@ -1,9 +1,9 @@
 package fleamarket.neworin.com.fleamarket.fragment;
 
-import android.app.Fragment;
-import android.content.Context;
+ import android.content.Context;
 import android.os.Bundle;
-import android.util.DisplayMetrics;
+ import android.support.v4.app.Fragment;
+ import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -24,8 +24,7 @@ import fleamarket.neworin.com.fleamarket.R;
 import fleamarket.neworin.com.fleamarket.bean.ImageCycle;
 import fleamarket.neworin.com.fleamarket.util.AnalyseData;
 import fleamarket.neworin.com.fleamarket.util.BitmapCache;
-import fleamarket.neworin.com.fleamarket.net.GetNetDataUtil;
-import fleamarket.neworin.com.fleamarket.util.MyApplication;
+ import fleamarket.neworin.com.fleamarket.util.MyApplication;
 
 /**
  * A simple {@link Fragment} subclass.

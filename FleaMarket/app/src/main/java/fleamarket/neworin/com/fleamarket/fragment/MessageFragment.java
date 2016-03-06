@@ -8,9 +8,9 @@ import android.view.ViewGroup;
 
 import fleamarket.neworin.com.fleamarket.R;
 
-public class MeFragment extends Fragment {
+public class MessageFragment extends Fragment {
 
-    public MeFragment() {
+    public MessageFragment() {
         // Required empty public constructor
     }
 
@@ -18,6 +18,6 @@ public class MeFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_me, container, false);
+        return inflater.inflate(R.layout.fragment_publish, container, false);
     }
 }

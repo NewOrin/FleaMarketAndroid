@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:custom="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -10,17 +11,24 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context="fleamarket.neworin.com.fleamarket.activity.MainActivity">
 
-    <android.support.v4.widget.SwipeRefreshLayout
-        android:id="@+id/swipe_layout"
+    <fleamarket.neworin.com.fleamarket.view.TopBar
+        android:id="@+id/main_topbar"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        custom:leftText="搜索"
+        custom:leftTextColor="@color/red"
+        custom:myTitleTextColor="@android:color/holo_green_dark"
+        custom:myTitle="主页"
+        custom:myTitleTextSize="10sp"
+        custom:rightText="发布"
+        custom:rightTextColor="@color/red" />
+
+    <android.support.v4.view.ViewPager
+        android:id="@+id/fragment_viewpager"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="1">
-
-        <RelativeLayout
-            android:id="@+id/main_fragment_container"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
-    </android.support.v4.widget.SwipeRefreshLayout>
+        android:layout_marginTop="10dp"
+        android:layout_weight="1" />
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -49,7 +57,7 @@
         </LinearLayout>
 
         <LinearLayout
-            android:id="@+id/tab_publish"
+            android:id="@+id/tab_focus"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
@@ -65,11 +73,11 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="发布" />
+                android:text="关注" />
         </LinearLayout>
 
         <LinearLayout
-            android:id="@+id/tab_me"
+            android:id="@+id/tab_message"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
@@ -85,7 +93,27 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="我" />
+                android:text="消息" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/tab_me"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:onClick="doTabClick"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="4" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="我的" />
         </LinearLayout>
     </LinearLayout>
 </LinearLayout>

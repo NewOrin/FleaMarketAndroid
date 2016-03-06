@@ -5,13 +5,13 @@ import android.app.Fragment;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
 import android.content.DialogInterface;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.view.KeyEvent;
 import android.view.View;
 import android.widget.TextView;
 
- import fleamarket.neworin.com.fleamarket.R;
+import fleamarket.neworin.com.fleamarket.R;
 import fleamarket.neworin.com.fleamarket.fragment.LoginFragment;
 import fleamarket.neworin.com.fleamarket.fragment.RegisterFragment;
 
@@ -29,7 +29,6 @@ public class FirstActivity extends AppCompatActivity implements FragmentManager.
         initFragment();
         initView();
         initEvent();
-
     }
 
     private void initEvent() {
@@ -63,7 +62,7 @@ public class FirstActivity extends AppCompatActivity implements FragmentManager.
 //                switchFragment(new RegisterFragment());
                 break;
             case R.id.btn_login:
-                break;
+                 break;
             case R.id.tv_left:
                 FragmentManager fragmentManager = getFragmentManager();
                 fragmentManager.popBackStack();
