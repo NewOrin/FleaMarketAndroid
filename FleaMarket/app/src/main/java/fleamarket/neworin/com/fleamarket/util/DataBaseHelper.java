@@ -19,9 +19,9 @@ public class DataBaseHelper extends SQLiteOpenHelper {
     @Override
     public void onCreate(SQLiteDatabase db) {
         db.execSQL("create table if not exists " + Constant.TABLE_USER + "(" + Constant.USER_NAME + " text primary key,"
-                + Constant.PASSWORD + " text not null," + Constant.PHONE_NUMBER + " text not null," + Constant.GENDER + " text,"
+                + Constant.PASSWORD + " text not null," + Constant.PHONE_NUMBER + " text not null," + Constant.POST_STR + " text," + Constant.GENDER + " text,"
                 + Constant.ADDRESS + " text," + Constant.AVATAR_URL + " text)");
-        Log.d("NewOrin","数据库创建成功！");
+        Log.d("NewOrin", "数据库创建成功！");
     }
 
     // 这个方法只有在当数据库版本发生变化时自动执行

@@ -1,44 +1,40 @@
 package fleamarket.neworin.com.fleamarket.fragment;
 
- import android.content.Context;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
- import android.support.v4.app.Fragment;
- import android.util.DisplayMetrics;
+import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
+import android.widget.ListView;
 
-import com.android.volley.toolbox.ImageLoader;
-import com.jorge.circlelibrary.ImageCycleView;
+import com.google.gson.Gson;
 
-import org.json.JSONArray;
-
-import java.util.ArrayList;
+import java.util.List;
 
 import cn.bmob.v3.BmobQuery;
-import cn.bmob.v3.listener.FindCallback;
+import cn.bmob.v3.listener.FindListener;
 import fleamarket.neworin.com.fleamarket.R;
-import fleamarket.neworin.com.fleamarket.bean.ImageCycle;
-import fleamarket.neworin.com.fleamarket.util.AnalyseData;
-import fleamarket.neworin.com.fleamarket.util.BitmapCache;
- import fleamarket.neworin.com.fleamarket.util.MyApplication;
+import fleamarket.neworin.com.fleamarket.adapter.HomeListViewAdapter;
+import fleamarket.neworin.com.fleamarket.bean.Post;
+import fleamarket.neworin.com.fleamarket.util.AppUtil;
+import fleamarket.neworin.com.fleamarket.util.Constant;
+import fleamarket.neworin.com.fleamarket.util.DataBaseHelper;
+import fleamarket.neworin.com.fleamarket.util.MyDataBase;
 
 /**
  * A simple {@link Fragment} subclass.
  */
 public class HomeFragment extends Fragment {
 
-    private ImageCycleView image_cycle;
     private View view;
-    private ArrayList<ImageCycle> imageList;
+    private ListView listview_home;
+    private MyDataBase myDataBase;
 
     public HomeFragment() {
         // Required empty public constructor
     }
-
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -50,105 +46,57 @@ public class HomeFragment extends Fragment {
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
+        AppUtil.showProgressDialog(getActivity(), "请稍后");
         initView();
-        queryData(getActivity(), "ImageCycle");
+        DataBaseHelper helper = new DataBaseHelper(getActivity());
+        SQLiteDatabase db = helper.getWritableDatabase();
+        myDataBase = new MyDataBase(helper, db, getActivity());
     }
 
     /**
      * 初始化控件
      */
+
     private void initView() {
-        image_cycle = (ImageCycleView) view.findViewById(R.id.image_cycle);
-    }
-
-    /**
-     * 给图片设置信息
-     */
-    private void setImageData() {
-        ArrayList<String> imageDescList = new ArrayList<>();
-        ArrayList<String> urlList = new ArrayList<>();
-        for (int i = 0; i < imageList.size(); i++) {
-            imageDescList.add(imageList.get(i).getImage_desc());
-            urlList.add(imageList.get(i).getImage_url());
-        }
-        Log.d("NewOrin", "imageDescList = " + imageDescList.toString());
-        Log.d("NewOrin", "urlList = " + urlList.toString());
-        initCarsueView(imageDescList, urlList);
-    }
-
-    /**
-     * 初始化轮播图
-     *
-     * @param imageDescList
-     * @param urlList
-     */
-    private void initCarsueView(ArrayList<String> imageDescList, ArrayList<String> urlList) {
-        LinearLayout.LayoutParams cParams = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, getScreenHeight(getActivity()) * 3 / 10);
-        image_cycle.setLayoutParams(cParams);
-        ImageCycleView.ImageCycleViewListener mAdCycleViewListener = new ImageCycleView.ImageCycleViewListener() {
+        listview_home = (ListView) view.findViewById(R.id.listview_home);
+        BmobQuery<Post> query = new BmobQuery<>();
+        query.include("author");
+        query.findObjects(getActivity(), new FindListener<Post>() {
             @Override
-            public void displayImage(String imageURL, ImageView imageView) {
-                /**显示图片**/
-                loadImageWithCache(imageURL, imageView);
+            public void onSuccess(List<Post> list) {
+                Log.d("NewOrin", list.toString());
+                if (list.size() != 0) {
+                    Gson gson = new Gson();
+                    String jsonStr = gson.toJson(list);
+                    //若表中post字段没有数据，则插入数据，有则更新
+                    if (myDataBase.doQueryDB(Constant.TABLE_USER, new String[]{Constant.POST_STR}, null, null, null, null, null, null) != null) {
+                        myDataBase.doUpdateDB(Constant.TABLE_USER, Constant.POST_STR, jsonStr, null, null);
+                    } else {
+                        myDataBase.doInsertDB(Constant.TABLE_USER, Constant.POST_STR, jsonStr);
+                    }
+                    showListView(list);
+                } else {
+                    AppUtil.showToast(getActivity(), "没有数据");
+                }
             }
 
             @Override
-            public void onImageClick(int position, View imageView) {
-                /**实现点击事件**/
-            }
-        };
-        image_cycle.setImageResources(imageDescList, urlList, mAdCycleViewListener);
-        image_cycle.startImageCycle();
-    }
-
-    /**
-     * 获取屏幕高度
-     *
-     * @param context
-     * @return
-     */
-    private int getScreenHeight(Context context) {
-        if (context == null) {
-            return 0;
-        }
-        DisplayMetrics dm = new DisplayMetrics();
-        dm = context.getApplicationContext().getResources().getDisplayMetrics();
-        return dm.heightPixels;
-    }
-
-    /**
-     * 加载图片
-     *
-     * @param imageUrl
-     * @param imageView
-     */
-    private void loadImageWithCache(String imageUrl, ImageView imageView) {
-
-        ImageLoader loader = new ImageLoader(MyApplication.getHttpQueues(), new BitmapCache());
-        ImageLoader.ImageListener listener = loader.getImageListener(imageView, R.mipmap.ic_launcher, R.mipmap.ic_launcher);
-        //加载及缓存网络图片
-        loader.get(imageUrl, listener);
-    }
-
-    /**
-     * 查询表的数据
-     *
-     * @param table
-     */
-    public void queryData(Context context, String table) {
-        BmobQuery query = new BmobQuery(table);
-        query.findObjects(context, new FindCallback() {
-            @Override
-            public void onSuccess(JSONArray jsonArray) {
-                Log.d("NewOrin", "获取成功" + jsonArray.toString());
-                imageList = AnalyseData.imageList(jsonArray);
-                setImageData();
-            }
-
-            @Override
-            public void onFailure(int i, String s) {
-                Log.d("NewOrin", "获取失败" + s);
+            public void onError(int i, String s) {
+                AppUtil.showToast(getActivity(), "获取数据失败");
             }
         });
     }
+
+    /**
+     * 显示ListView
+     *
+     * @param list 获得帖子的数据
+     */
+    private void showListView(List<Post> list) {
+        listview_home.setAdapter(new HomeListViewAdapter(list, getActivity(), listview_home));
+        if (AppUtil.progressDialog != null) {
+            AppUtil.closeProgressDialog();
+        }
+    }
+
 }

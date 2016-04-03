@@ -5,15 +5,10 @@
     android:orientation="vertical"
     tools:context="fleamarket.neworin.com.fleamarket.fragment.HomeFragment">
 
-    <com.jorge.circlelibrary.ImageCycleView
-        android:id="@+id/image_cycle"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
-
     <ListView
         android:id="@+id/listview_home"
+        android:dividerHeight="10dp"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1" />
-
 </LinearLayout>

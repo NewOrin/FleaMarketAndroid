@@ -101,7 +101,7 @@ public class TopBar extends RelativeLayout {
         tvTitle.setGravity(Gravity.CENTER);
 
         //给TopBar设置背景颜色
-        setBackgroundColor(Color.GREEN);
+        setBackgroundColor(Color.RED);
 
         //定义控件的布局属性
         leftParams = new LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);//定义宽，高属性

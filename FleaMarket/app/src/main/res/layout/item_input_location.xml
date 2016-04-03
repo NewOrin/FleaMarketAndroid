@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:theme="@android:style/Animation.Dialog">
+
+    <EditText
+        android:id="@+id/et_input_location"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:hint="请输入您所在位置" />
+</LinearLayout>

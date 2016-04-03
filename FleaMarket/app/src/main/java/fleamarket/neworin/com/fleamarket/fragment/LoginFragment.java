@@ -3,7 +3,6 @@ package fleamarket.neworin.com.fleamarket.fragment;
 
 import android.app.Fragment;
 import android.content.ContentValues;
-import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Typeface;
@@ -20,9 +19,8 @@ import cn.bmob.v3.Bmob;
 import cn.bmob.v3.BmobUser;
 import cn.bmob.v3.listener.SaveListener;
 import fleamarket.neworin.com.fleamarket.R;
-import fleamarket.neworin.com.fleamarket.activity.MainActivity;
 import fleamarket.neworin.com.fleamarket.util.AppUtil;
-import fleamarket.neworin.com.fleamarket.util.ClearEditText;
+import fleamarket.neworin.com.fleamarket.view.ClearEditText;
 import fleamarket.neworin.com.fleamarket.util.Constant;
 import fleamarket.neworin.com.fleamarket.util.DataBaseHelper;
 import fleamarket.neworin.com.fleamarket.util.SharedPreferencesHelper;
@@ -106,10 +104,10 @@ public class LoginFragment extends Fragment implements View.OnClickListener {
         user.login(getActivity(), new SaveListener() {
             @Override
             public void onSuccess() {
-                if(!ifUsernameExist(username)){
-                insertDBData(username, password);}
+                if (!ifUsernameExist(username)) {
+                    insertDBData(username, password);
+                }
                 insertSPData(username, password);
-                startActivity(new Intent(getActivity(), MainActivity.class));
                 AppUtil.showToast(getActivity(), "登录成功");
                 getActivity().finish();
             }
@@ -124,6 +122,7 @@ public class LoginFragment extends Fragment implements View.OnClickListener {
 
     /**
      * 给数据库插入数据
+     *
      * @param username
      * @param password
      */
@@ -139,6 +138,7 @@ public class LoginFragment extends Fragment implements View.OnClickListener {
 
     /**
      * SharedPreferences插入数据
+     *
      * @param username
      * @param password
      */
@@ -148,14 +148,15 @@ public class LoginFragment extends Fragment implements View.OnClickListener {
         sph.putStringValue(Constant.PASSWORD, password);
         sph.putBooleanValue(Constant.IS_AUTO_LOGIN, true);
     }
-    private Boolean ifUsernameExist(String username){
-        String sql = "select * from "+Constant.TABLE_USER + " where "+Constant.USER_NAME + " = ?";
-        Cursor cursor = db.rawQuery(sql,new String[]{username});
-        if(cursor.moveToFirst()){
-            Log.d("NewOrin","用户存在，无需插入数据到数据库");
+
+    private Boolean ifUsernameExist(String username) {
+        String sql = "select * from " + Constant.TABLE_USER + " where " + Constant.USER_NAME + " = ?";
+        Cursor cursor = db.rawQuery(sql, new String[]{username});
+        if (cursor.moveToFirst()) {
+            Log.d("NewOrin", "用户存在，无需插入数据到数据库");
             return true;
-        }else {
-            Log.d("NewOrin","不存在用户,需要插入");
+        } else {
+            Log.d("NewOrin", "不存在用户,需要插入");
             return false;
         }
     }

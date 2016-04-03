@@ -1,14 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:custom="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/item_background"
     android:orientation="vertical"
-    tools:context="fleamarket.neworin.com.fleamarket.fragment.MeFragment">
+    tools:context="fleamarket.neworin.com.fleamarket.activity.AccountActivity">
+
+    <fleamarket.neworin.com.fleamarket.view.TopBar
+        android:id="@+id/account_topbar"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        custom:leftText="返回"
+        custom:leftTextColor="@color/white"
+        custom:myTitle="账户管理"
+        custom:myTitleTextColor="@android:color/white"
+        custom:myTitleTextSize="10sp"
+        custom:rightTextColor="@color/red" />
 
     <fleamarket.neworin.com.fleamarket.view.ScrollViewLinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="0dp"
+        android:layout_weight="1">
 
         <ScrollView
             android:layout_width="match_parent"
@@ -20,100 +34,30 @@
                 android:orientation="vertical">
 
                 <RelativeLayout
-                    android:id="@+id/layout_avatar"
+                    android:id="@+id/layout_set_avatar"
                     android:layout_width="match_parent"
-                    android:layout_height="120dp"
-                    android:layout_marginTop="1dp"
-                    android:background="@drawable/red_item_selector"
-                    android:clickable="true">
+                    android:layout_height="80dp"
+                    android:background="@drawable/item_selector"
+                    android:clickable="true"
+                    android:onClick="accountDoClick">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:layout_marginLeft="@dimen/item_text_margin_left"
+                        android:text="头像"
+                        android:textColor="@color/black"
+                        android:textSize="16sp" />
 
                     <fleamarket.neworin.com.fleamarket.view.CircleImageView
-                        android:id="@+id/me_fg_avatar"
                         android:layout_width="60dp"
                         android:layout_height="60dp"
-                        android:layout_centerVertical="true"
-                        android:layout_marginLeft="20dp"
-                        android:src="@drawable/default_avatar" />
-
-                    <LinearLayout
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_centerVertical="true"
-                        android:layout_marginLeft="15dp"
-                        android:layout_toRightOf="@+id/me_fg_avatar"
-                        android:orientation="vertical">
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="NewOrin"
-                            android:textColor="@color/white"
-                            android:textSize="16sp" />
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="5dp"
-                            android:text="个性签名"
-                            android:textColor="@color/white"
-                            android:textSize="16sp" />
-                    </LinearLayout>
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
                         android:layout_alignParentRight="true"
+                        android:id="@+id/account_avatar"
                         android:layout_centerVertical="true"
                         android:layout_marginRight="40dp"
-                        android:text="账户管理"
-                        android:textColor="@color/white"
-                        android:textSize="16sp" />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_alignParentRight="true"
-                        android:layout_centerVertical="true"
-                        android:layout_marginRight="20dp"
-                        android:text=">"
-                        android:textColor="@color/white"
-                        android:textSize="14sp" />
-
-                </RelativeLayout>
-
-                <RelativeLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="40dp"
-                    android:layout_marginTop="20dp"
-                    android:background="@drawable/item_selector"
-                    android:clickable="true">
-
-                    <TextView
-                        android:id="@+id/iconfont_publish"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_centerVertical="true"
-                        android:layout_marginLeft="@dimen/item_text_margin_left"
-                        android:text="发布" />
-
-                    <TextView
-                        android:id="@+id/tv_my_publish"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_centerVertical="true"
-                        android:layout_marginLeft="10dp"
-                        android:layout_toRightOf="@+id/iconfont_publish"
-                        android:text="我的发布"
-                        android:textColor="@color/black"
-                        android:textSize="16sp" />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_alignParentRight="true"
-                        android:layout_centerVertical="true"
-                        android:layout_marginRight="50dp"
-                        android:text="0" />
+                        android:src="@drawable/default_avatar" />
 
                     <TextView
                         android:layout_width="wrap_content"
@@ -122,36 +66,24 @@
                         android:layout_centerVertical="true"
                         android:layout_marginRight="20dp"
                         android:text=">" />
-
                 </RelativeLayout>
 
                 <TextView
                     android:layout_width="match_parent"
-                    android:layout_height="0.2dp"
-                    android:background="@color/item_text_shadow" />
+                    android:layout_height="@dimen/text_split_height"
+                    android:background="@color/item_background" />
 
                 <RelativeLayout
                     android:layout_width="match_parent"
-                    android:layout_height="40dp"
-                    android:background="@drawable/item_selector"
-                    android:clickable="true">
+                    android:layout_height="50dp"
+                    android:background="@color/white"
+                    android:gravity="center_vertical">
 
                     <TextView
-                        android:id="@+id/iconfont_sold"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_centerVertical="true"
                         android:layout_marginLeft="@dimen/item_text_margin_left"
-                        android:text="卖出" />
-
-                    <TextView
-                        android:id="@+id/tv_my_sold"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_centerVertical="true"
-                        android:layout_marginLeft="10dp"
-                        android:layout_toRightOf="@+id/iconfont_sold"
-                        android:text="我的卖出"
+                        android:text="注册手机号"
                         android:textColor="@color/black"
                         android:textSize="16sp" />
 
@@ -159,95 +91,108 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_alignParentRight="true"
-                        android:layout_centerVertical="true"
-                        android:layout_marginRight="50dp"
-                        android:text="0" />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_alignParentRight="true"
-                        android:layout_centerVertical="true"
                         android:layout_marginRight="20dp"
-                        android:text=">" />
-
+                        android:text="18907975986"
+                        android:textColor="@color/item_text_shadow" />
                 </RelativeLayout>
 
                 <TextView
                     android:layout_width="match_parent"
-                    android:layout_height="0.2dp"
-                    android:background="@color/item_text_shadow" />
+                    android:layout_height="@dimen/text_split_height"
+                    android:background="@color/item_background" />
 
                 <RelativeLayout
+                    android:id="@+id/layout_set_nickname"
                     android:layout_width="match_parent"
-                    android:layout_height="40dp"
+                    android:layout_height="50dp"
                     android:background="@drawable/item_selector"
-                    android:clickable="true">
+                    android:clickable="true"
+                    android:gravity="center_vertical"
+                    android:onClick="accountDoClick">
 
                     <TextView
-                        android:id="@+id/iconfont_bought"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_centerVertical="true"
                         android:layout_marginLeft="@dimen/item_text_margin_left"
-                        android:text="买到" />
-
-                    <TextView
-                        android:id="@+id/tv_my_bought"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_centerVertical="true"
-                        android:layout_marginLeft="10dp"
-                        android:layout_toRightOf="@+id/iconfont_bought"
-                        android:text="我的买到"
+                        android:text="昵称"
                         android:textColor="@color/black"
                         android:textSize="16sp" />
 
                     <TextView
+                        android:id="@+id/tv_show_nickname"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_alignParentRight="true"
-                        android:layout_centerVertical="true"
-                        android:layout_marginRight="50dp"
-                        android:text="0" />
+                        android:layout_marginRight="40dp"
+                        android:text="昵称"
+                        android:textColor="@color/item_text_shadow" />
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_alignParentRight="true"
-                        android:layout_centerVertical="true"
                         android:layout_marginRight="20dp"
                         android:text=">" />
-
                 </RelativeLayout>
 
                 <TextView
                     android:layout_width="match_parent"
-                    android:layout_height="0.2dp"
-                    android:background="@color/item_text_shadow" />
+                    android:layout_height="@dimen/text_split_height"
+                    android:background="@color/item_background" />
 
                 <RelativeLayout
+                    android:id="@+id/layout_set_sex"
                     android:layout_width="match_parent"
-                    android:layout_height="40dp"
+                    android:layout_height="50dp"
                     android:background="@drawable/item_selector"
-                    android:clickable="true">
+                    android:clickable="true"
+                    android:gravity="center_vertical"
+                    android:onClick="accountDoClick">
 
                     <TextView
-                        android:id="@+id/iconfont_favour"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_centerVertical="true"
                         android:layout_marginLeft="@dimen/item_text_margin_left"
-                        android:text="我赞" />
+                        android:text="性别"
+                        android:textColor="@color/black"
+                        android:textSize="16sp" />
 
                     <TextView
-                        android:id="@+id/tv_my_favour"
+                        android:id="@+id/tv_show_gender"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_centerVertical="true"
-                        android:layout_marginLeft="10dp"
-                        android:layout_toRightOf="@+id/iconfont_favour"
-                        android:text="我的赞赞"
+                        android:layout_alignParentRight="true"
+                        android:layout_marginRight="40dp"
+                        android:text="保密"
+                        android:textColor="@color/item_text_shadow" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentRight="true"
+                        android:layout_marginRight="20dp"
+                        android:text=">" />
+                </RelativeLayout>
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/text_split_height"
+                    android:background="@color/item_background" />
+
+                <RelativeLayout
+                    android:id="@+id/layout_set_password"
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:background="@drawable/item_selector"
+                    android:clickable="true"
+                    android:gravity="center_vertical"
+                    android:onClick="accountDoClick">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="@dimen/item_text_margin_left"
+                        android:text="密码更改"
                         android:textColor="@color/black"
                         android:textSize="16sp" />
 
@@ -255,20 +200,56 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_alignParentRight="true"
-                        android:layout_centerVertical="true"
-                        android:layout_marginRight="50dp"
-                        android:text="0" />
+                        android:layout_marginRight="40dp"
+                        android:text="" />
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_alignParentRight="true"
-                        android:layout_centerVertical="true"
                         android:layout_marginRight="20dp"
                         android:text=">" />
-
                 </RelativeLayout>
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/text_split_height"
+                    android:background="@color/item_background" />
+
+                <RelativeLayout
+                    android:id="@+id/layout_set_address"
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:background="@drawable/item_selector"
+                    android:clickable="true"
+                    android:gravity="center_vertical"
+                    android:onClick="accountDoClick">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="@dimen/item_text_margin_left"
+                        android:text="地址管理"
+                        android:textColor="@color/black"
+                        android:textSize="16sp" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentRight="true"
+                        android:layout_marginRight="40dp"
+                        android:text="" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentRight="true"
+                        android:layout_marginRight="20dp"
+                        android:text=">" />
+                </RelativeLayout>
+
             </LinearLayout>
         </ScrollView>
     </fleamarket.neworin.com.fleamarket.view.ScrollViewLinearLayout>
+
 </LinearLayout>

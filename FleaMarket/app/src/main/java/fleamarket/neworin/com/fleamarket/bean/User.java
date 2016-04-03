@@ -8,9 +8,10 @@ import cn.bmob.v3.BmobUser;
  */
 public class User extends BmobUser {
 
-    private String gender;
-    private String address;
-    private String avatar_url;
+    private String gender;//性别
+    private String address;//地址
+    private String avatar_url;//头像url
+
 
     public String getGender() {
         return gender;
@@ -35,4 +36,5 @@ public class User extends BmobUser {
     public void setAvatar_url(String avatar_url) {
         this.avatar_url = avatar_url;
     }
+
 }

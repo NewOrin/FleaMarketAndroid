@@ -7,7 +7,12 @@
     <color name="colorText">#FFFFFF</color>
     <color name="red">#FF0000</color>
     <color name="red_shadow">#FFB9B9</color>
-    <color name="red_pressed">#AA0000</color>
+    <color name="red_pressed">#EE0000</color>
+    <color name="btn_no_value">#C0C0C0</color>
 
     <color name="black_overlay">#66000000</color>
+    <color name="item_home_address_from">#3F51B5</color>
+    <color name="item_tv_sell_price">#FF0000</color>
+    <color name="item_background">#EDEDED</color>
+    <color name="item_text_shadow">#D6D7E4</color>
 </resources>

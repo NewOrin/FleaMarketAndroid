@@ -1,4 +1,4 @@
-package fleamarket.neworin.com.fleamarket.util;
+package fleamarket.neworin.com.fleamarket.view;
 
 import android.content.Context;
 import android.graphics.Rect;

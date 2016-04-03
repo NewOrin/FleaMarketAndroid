@@ -3,6 +3,7 @@ package fleamarket.neworin.com.fleamarket.activity;
 import android.content.ContentResolver;
 import android.content.Intent;
 import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
@@ -19,12 +20,15 @@ import android.widget.Toast;
 
 import com.bmob.BTPFileResponse;
 import com.bmob.BmobProFile;
+import com.bmob.btp.callback.UploadBatchListener;
 import com.bmob.btp.callback.UploadListener;
 
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.List;
 
+import cn.bmob.v3.Bmob;
+import cn.bmob.v3.BmobUser;
 import cn.bmob.v3.datatype.BmobFile;
 import fleamarket.neworin.com.fleamarket.R;
 import fleamarket.neworin.com.fleamarket.fragment.FocusFragment;
@@ -33,6 +37,7 @@ import fleamarket.neworin.com.fleamarket.fragment.MeFragment;
 import fleamarket.neworin.com.fleamarket.fragment.MessageFragment;
 import fleamarket.neworin.com.fleamarket.util.AppUtil;
 import fleamarket.neworin.com.fleamarket.util.Constant;
+import fleamarket.neworin.com.fleamarket.util.DataBaseHelper;
 import fleamarket.neworin.com.fleamarket.util.SharedPreferencesHelper;
 import fleamarket.neworin.com.fleamarket.view.TopBar;
 
@@ -54,6 +59,7 @@ public class MainActivity extends AppCompatActivity {
         getSupportActionBar().hide();
         setContentView(R.layout.activity_main);
         initView();
+        new DataBaseHelper(MainActivity.this);
         intEvent();
         setSelect(0);
     }
@@ -62,12 +68,18 @@ public class MainActivity extends AppCompatActivity {
         myTopBar.setOnTopBarClickListener(new TopBar.topbarClickListener() {
             @Override
             public void leftClick() {
-                AppUtil.showToast(MainActivity.this, "搜索");
+//                AppUtil.showToast(MainActivity.this, "搜索");
             }
 
             @Override
             public void rightClick() {
-                startActivity(new Intent(MainActivity.this, PublishActivity.class));
+                BmobUser user = BmobUser.getCurrentUser(MainActivity.this);
+                if (user != null)
+                    startActivity(new Intent(MainActivity.this, PublishActivity.class));
+                else {
+                    AppUtil.showToast(MainActivity.this, "请先登录");
+                    startActivity(new Intent(MainActivity.this, FirstActivity.class));
+                }
             }
         });
     }
@@ -98,6 +110,20 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
                 int currentItem = fragment_viewpager.getCurrentItem();
+                switch (currentItem) {
+                    case 0:
+                        myTopBar.setTitleText("主页");
+                        break;
+                    case 1:
+                        myTopBar.setTitleText("关注");
+                        break;
+                    case 2:
+                        myTopBar.setTitleText("消息");
+                        break;
+                    case 3:
+                        myTopBar.setTitleText("我的");
+                        break;
+                }
             }
 
             @Override
@@ -249,4 +275,5 @@ public class MainActivity extends AppCompatActivity {
         else
             return false;
     }
+
 }

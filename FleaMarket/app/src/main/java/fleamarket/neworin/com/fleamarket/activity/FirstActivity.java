@@ -62,6 +62,7 @@ public class FirstActivity extends AppCompatActivity implements FragmentManager.
 //                switchFragment(new RegisterFragment());
                 break;
             case R.id.btn_login:
+
                  break;
             case R.id.tv_left:
                 FragmentManager fragmentManager = getFragmentManager();

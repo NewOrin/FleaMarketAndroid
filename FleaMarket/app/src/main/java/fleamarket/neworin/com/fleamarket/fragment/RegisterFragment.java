@@ -20,7 +20,7 @@ import cn.bmob.v3.listener.SaveListener;
 import cn.bmob.v3.listener.VerifySMSCodeListener;
 import fleamarket.neworin.com.fleamarket.R;
 import fleamarket.neworin.com.fleamarket.util.AppUtil;
-import fleamarket.neworin.com.fleamarket.util.ClearEditText;
+import fleamarket.neworin.com.fleamarket.view.ClearEditText;
 import fleamarket.neworin.com.fleamarket.util.Constant;
 
 public class RegisterFragment extends Fragment implements View.OnClickListener {
