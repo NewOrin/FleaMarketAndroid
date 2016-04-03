@@ -95,6 +95,7 @@ public class AccountActivity extends AppCompatActivity {
                 showValidatePwdDialog();
                 break;
             case R.id.layout_set_address:
+                startActivity(new Intent(AccountActivity.this, DeliverAddressActivity.class));
                 break;
         }
     }

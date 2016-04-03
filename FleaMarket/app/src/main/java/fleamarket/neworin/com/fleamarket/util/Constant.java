@@ -22,5 +22,6 @@ public class Constant {
     public static final String IS_AUTO_LOGIN = "isAutoLogin";
     public static final String POST_STR = "post";//用户帖子
 
-    public static final String GET_AREA_INFO_URL = "http://api.avatardata.cn/SimpleArea/LookUp";
+    public static final String GET_AREA_KEY = "36fbf23ba27f410685544933c78eb33c";
+    public static final String GET_AREA_INFO_URL = "http://api.avatardata.cn/SimpleArea/LookUp?key="+GET_AREA_KEY;
 }

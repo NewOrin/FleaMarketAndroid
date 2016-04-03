@@ -71,6 +71,7 @@
         android:background="@color/red_shadow" />
 
     <RelativeLayout
+        android:id="@+id/layout_select_address"
         android:layout_width="match_parent"
         android:layout_height="50dp"
         android:background="@drawable/item_selector"
@@ -107,6 +108,16 @@
         android:layout_height="80dp"
         android:layout_marginLeft="10dp"
         android:hint="详细地址"
+        android:layout_marginTop="10dp"
         android:textColor="@color/black"
         android:textSize="20sp" />
+
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_marginTop="10dp"
+        android:background="@drawable/btn_login_bg"
+        android:text="删除地址"
+        android:textColor="@color/white"
+        android:textSize="18sp" />
 </LinearLayout>
