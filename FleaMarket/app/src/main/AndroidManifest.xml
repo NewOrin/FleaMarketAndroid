@@ -57,7 +57,8 @@
             android:launchMode="standard" />
         <activity android:name=".activity.AlterPasswordActivity" />
         <activity android:name=".activity.DeliverAddressActivity" />
-        <activity android:name=".activity.AddAddressActivity"></activity>
+        <activity android:name=".activity.AddAddressActivity" />
+        <activity android:name=".activity.SelectAreaActivity"></activity>
     </application>
 
 </manifest>

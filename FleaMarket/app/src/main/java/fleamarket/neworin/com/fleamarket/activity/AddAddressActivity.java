@@ -1,5 +1,6 @@
 package fleamarket.neworin.com.fleamarket.activity;
 
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -12,6 +13,7 @@ import com.android.volley.VolleyError;
 import org.json.JSONObject;
 
 import fleamarket.neworin.com.fleamarket.R;
+import fleamarket.neworin.com.fleamarket.fragment.FragmentProvince;
 import fleamarket.neworin.com.fleamarket.net.NetWorkUtil;
 import fleamarket.neworin.com.fleamarket.util.AnalyticJson;
 import fleamarket.neworin.com.fleamarket.view.TopBar;
@@ -54,20 +56,7 @@ public class AddAddressActivity extends AppCompatActivity implements View.OnClic
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.layout_select_address:
-                NetWorkUtil netWorkUtil = new NetWorkUtil(AddAddressActivity.this);
-                netWorkUtil.getAreaInfo(new Response.Listener<JSONObject>() {
-                    @Override
-                    public void onResponse(JSONObject jsonObject) {
-                        Log.d("NewOrin", "查询行政返回数据:" + jsonObject.toString());
-                        AnalyticJson.analyticAreaJson(jsonObject);
-                    }
-                }, new Response.ErrorListener() {
-                    @Override
-                    public void onErrorResponse(VolleyError volleyError) {
-
-                    }
-                }, "e484841f-27e9-4ec9-96d6-d8f8855caec1");
-
+                startActivity(new Intent(AddAddressActivity.this, SelectAreaActivity.class));
                 break;
         }
     }

@@ -20,7 +20,12 @@ public class Constant {
     public static final String ADDRESS = "address";
     public static final String AVATAR_URL = "avatarurl";//头像图片url
     public static final String IS_AUTO_LOGIN = "isAutoLogin";
-    public static final String POST_STR = "post";//用户帖子
+
+    /**
+     * 帖子表
+     */
+    public static final String TABLE_POST = "_post";
+    public static final String POST = "post";
 
     public static final String GET_AREA_KEY = "36fbf23ba27f410685544933c78eb33c";
     public static final String GET_AREA_INFO_URL = "http://api.avatardata.cn/SimpleArea/LookUp?key="+GET_AREA_KEY;

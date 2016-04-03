@@ -69,10 +69,12 @@ public class HomeFragment extends Fragment {
                     Gson gson = new Gson();
                     String jsonStr = gson.toJson(list);
                     //若表中post字段没有数据，则插入数据，有则更新
-                    if (myDataBase.doQueryDB(Constant.TABLE_USER, new String[]{Constant.POST_STR}, null, null, null, null, null, null) != null) {
-                        myDataBase.doUpdateDB(Constant.TABLE_USER, Constant.POST_STR, jsonStr, null, null);
+                    if (myDataBase.doQueryDB(Constant.TABLE_POST, new String[]{Constant.POST}, null, null, null, null, null, null) != null) {
+                        Log.d("NewOrin", "需要更新post");
+                        myDataBase.doUpdateDB(Constant.TABLE_POST, Constant.POST, jsonStr, null, null);
                     } else {
-                        myDataBase.doInsertDB(Constant.TABLE_USER, Constant.POST_STR, jsonStr);
+                        Log.d("NewOrin", "需要插入post");
+                        myDataBase.doInsertDB(Constant.TABLE_POST, Constant.POST, jsonStr);
                     }
                     showListView(list);
                 } else {

@@ -19,8 +19,9 @@ public class DataBaseHelper extends SQLiteOpenHelper {
     @Override
     public void onCreate(SQLiteDatabase db) {
         db.execSQL("create table if not exists " + Constant.TABLE_USER + "(" + Constant.USER_NAME + " text primary key,"
-                + Constant.PASSWORD + " text not null," + Constant.PHONE_NUMBER + " text not null," + Constant.POST_STR + " text," + Constant.GENDER + " text,"
+                + Constant.PASSWORD + " text not null," + Constant.PHONE_NUMBER + " text not null," + Constant.GENDER + " text,"
                 + Constant.ADDRESS + " text," + Constant.AVATAR_URL + " text)");
+        db.execSQL("create table if not exists " + Constant.TABLE_POST + "(" + Constant.POST + " text primary key)");
         Log.d("NewOrin", "数据库创建成功！");
     }
 
