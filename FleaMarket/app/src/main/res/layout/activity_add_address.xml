@@ -87,6 +87,7 @@
             android:textSize="20sp" />
 
         <TextView
+            android:id="@+id/tv_show_select_area"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
@@ -107,8 +108,8 @@
         android:layout_width="match_parent"
         android:layout_height="80dp"
         android:layout_marginLeft="10dp"
-        android:hint="详细地址"
         android:layout_marginTop="10dp"
+        android:hint="详细地址"
         android:textColor="@color/black"
         android:textSize="20sp" />
 
