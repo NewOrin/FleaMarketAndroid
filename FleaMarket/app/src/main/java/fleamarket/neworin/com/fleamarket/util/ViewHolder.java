@@ -78,11 +78,9 @@ public class ViewHolder {
         return this;
     }
 
-    public <T extends View> T setVisible(int viewId, boolean flag) {
-        T view = getView(viewId);
-        if (flag) {
-            view.setVisibility(View.VISIBLE);
-        } else view.setVisibility(View.GONE);
-        return view;
+    public ViewHolder setTextClickListener(int viewId, View.OnClickListener listener) {
+        TextView tv = getView(viewId);
+        tv.setOnClickListener(listener);
+        return this;
     }
 }

@@ -4,8 +4,6 @@ import android.app.Fragment;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
 import android.content.Intent;
-import android.os.Handler;
-import android.os.Message;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -113,12 +111,12 @@ public class SelectAreaActivity extends AppCompatActivity implements FragmentInt
                 StringBuffer sb = new StringBuffer();
                 for (String s : select_area) {
                     if (s != null) {
-                        sb.append(s);
+                        sb.append(s+" ");
                     }
                 }
                 Intent intent = new Intent();
                 intent.putExtra("address", sb.toString());
-                setResult(AddAddressActivity.SELECTAREA_CODE, intent);
+                setResult(AddEditAddressActivity.SELECTAREA_CODE, intent);
                 finish();
                 break;
         }

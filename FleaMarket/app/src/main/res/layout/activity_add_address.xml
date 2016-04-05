@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context="fleamarket.neworin.com.fleamarket.activity.AddAddressActivity">
+    tools:context=".activity.AddEditAddressActivity">
 
     <fleamarket.neworin.com.fleamarket.view.TopBar
         android:id="@+id/add_address_topbar"
@@ -34,6 +34,7 @@
             android:textSize="20sp" />
 
         <EditText
+            android:id="@+id/et_add_address_name"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
     </LinearLayout>
@@ -59,6 +60,7 @@
             android:textSize="20sp" />
 
         <EditText
+            android:id="@+id/et_add_address_phone"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:inputType="number" />
@@ -105,20 +107,29 @@
     </RelativeLayout>
 
     <EditText
+        android:id="@+id/et_add_address_detail"
         android:layout_width="match_parent"
         android:layout_height="80dp"
         android:layout_marginLeft="10dp"
         android:layout_marginTop="10dp"
-        android:hint="详细地址"
+        android:hint="详细街道地址"
         android:textColor="@color/black"
         android:textSize="20sp" />
 
-    <Button
+    <RelativeLayout
+        android:id="@+id/layout_delete_address"
         android:layout_width="match_parent"
-        android:layout_height="50dp"
-        android:layout_marginTop="10dp"
-        android:background="@drawable/btn_login_bg"
-        android:text="删除地址"
-        android:textColor="@color/white"
-        android:textSize="18sp" />
+        android:layout_height="40dp"
+        android:layout_marginTop="20dp"
+        android:background="@color/white"
+        android:gravity="center_vertical">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:text="删除地址"
+            android:textColor="@color/red"
+            android:textSize="20sp" />
+    </RelativeLayout>
 </LinearLayout>

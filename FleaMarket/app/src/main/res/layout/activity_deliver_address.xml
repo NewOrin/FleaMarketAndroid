@@ -1,21 +1,38 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:custom="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/item_background"
     android:orientation="vertical"
     tools:context="fleamarket.neworin.com.fleamarket.activity.DeliverAddressActivity">
 
+    <fleamarket.neworin.com.fleamarket.view.TopBar
+        android:id="@+id/deliver_topbar"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        custom:leftText="返回"
+        custom:leftTextColor="@color/white"
+        custom:myTitle="地址管理"
+        custom:myTitleTextColor="@android:color/white"
+        custom:myTitleTextSize="10sp"
+        custom:rightTextColor="@color/red" />
+
+
     <ListView
+        android:id="@+id/deliver_listview"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="1" />
+        android:layout_weight="1"
+        android:cacheColorHint="@color/item_background"
+        android:dividerHeight="8dp" />
 
     <Button
-        android:onClick="addressDoClick"
         android:layout_width="match_parent"
         android:layout_height="40dp"
         android:background="@drawable/btn_login_bg"
+        android:onClick="addressDoClick"
         android:text="新增收货地址"
         android:textColor="@color/white"
         android:textSize="18sp" />

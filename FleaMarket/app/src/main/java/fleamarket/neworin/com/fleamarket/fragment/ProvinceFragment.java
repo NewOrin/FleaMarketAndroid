@@ -83,6 +83,11 @@ public class ProvinceFragment extends Fragment {
             public void convert(ViewHolder holder, Area area) {
                 holder.setText(R.id.tv_show_area, area.getName());
             }
+
+            @Override
+            public void itemClick(ViewHolder holder, Area area,int item_position) {
+
+            }
         });
         AppUtil.closeProgressDialog();
         iniEvent();
