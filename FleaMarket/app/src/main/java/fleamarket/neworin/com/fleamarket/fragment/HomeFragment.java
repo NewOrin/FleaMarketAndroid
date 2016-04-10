@@ -84,7 +84,8 @@ public class HomeFragment extends Fragment {
 
             @Override
             public void onError(int i, String s) {
-                AppUtil.showToast(getActivity(), "获取数据失败");
+                AppUtil.showToast(getActivity(), "获取数据失败" + s);
+                AppUtil.closeProgressDialog();
             }
         });
     }

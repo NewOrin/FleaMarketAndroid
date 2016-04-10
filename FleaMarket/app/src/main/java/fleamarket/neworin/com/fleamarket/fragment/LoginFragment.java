@@ -98,7 +98,7 @@ public class LoginFragment extends Fragment implements View.OnClickListener {
     }
 
     private void doLogin() {
-        BmobUser user = new BmobUser();
+        final BmobUser user = new BmobUser();
         user.setUsername(username);
         user.setPassword(password);
         user.login(getActivity(), new SaveListener() {
@@ -107,7 +107,7 @@ public class LoginFragment extends Fragment implements View.OnClickListener {
                 if (!ifUsernameExist(username)) {
                     insertDBData(username, password);
                 }
-                insertSPData(username, password);
+                insertSPData(username, password, user.getObjectId());
                 AppUtil.showToast(getActivity(), "登录成功");
                 getActivity().finish();
             }
@@ -142,10 +142,11 @@ public class LoginFragment extends Fragment implements View.OnClickListener {
      * @param username
      * @param password
      */
-    private void insertSPData(String username, String password) {
+    private void insertSPData(String username, String password, String objectId) {
         SharedPreferencesHelper sph = new SharedPreferencesHelper(getActivity(), "userinfo");
         sph.putStringValue(Constant.USER_NAME, username);
         sph.putStringValue(Constant.PASSWORD, password);
+        sph.putStringValue(Constant.OBJECT_ID, objectId);
         sph.putBooleanValue(Constant.IS_AUTO_LOGIN, true);
     }
 

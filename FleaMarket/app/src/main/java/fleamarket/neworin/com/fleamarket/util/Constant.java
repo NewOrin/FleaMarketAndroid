@@ -20,6 +20,8 @@ public class Constant {
     public static final String ADDRESS = "address";
     public static final String AVATAR_URL = "avatarurl";//头像图片url
     public static final String IS_AUTO_LOGIN = "isAutoLogin";
+    public static final String OBJECT_ID = "objectId";
+
 
     /**
      * 帖子表

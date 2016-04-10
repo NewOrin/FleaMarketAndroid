@@ -55,7 +55,8 @@ public class DeliverAddressActivity extends AppCompatActivity {
 
             @Override
             public void onError(int i, String s) {
-                AppUtil.showToast(DeliverAddressActivity.this, "获取数据失败");
+                AppUtil.showToast(DeliverAddressActivity.this, "获取数据失败" + s);
+                AppUtil.closeProgressDialog();
             }
         });
     }

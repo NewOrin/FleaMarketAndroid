@@ -5,6 +5,7 @@ import android.content.ContentResolver;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
@@ -24,9 +25,20 @@ import java.io.BufferedOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.net.URLEncoder;
 
+import cn.bmob.v3.Bmob;
+import cn.bmob.v3.BmobUser;
+import cn.bmob.v3.datatype.BmobFile;
+import cn.bmob.v3.listener.UpdateListener;
+import cn.bmob.v3.listener.UploadFileListener;
 import fleamarket.neworin.com.fleamarket.R;
+import fleamarket.neworin.com.fleamarket.bean.User;
+import fleamarket.neworin.com.fleamarket.util.AppUtil;
+import fleamarket.neworin.com.fleamarket.util.Constant;
+import fleamarket.neworin.com.fleamarket.util.DataBaseHelper;
 import fleamarket.neworin.com.fleamarket.util.ImageTools;
+import fleamarket.neworin.com.fleamarket.util.MyDataBase;
 import fleamarket.neworin.com.fleamarket.util.SharedPreferencesHelper;
 import fleamarket.neworin.com.fleamarket.view.CircleImageView;
 import fleamarket.neworin.com.fleamarket.view.TopBar;
@@ -298,7 +310,57 @@ public class AccountActivity extends AppCompatActivity {
             cursor.moveToFirst();
             pathImage = cursor.getString(cursor.getColumnIndex(MediaStore.Images.Media.DATA));
             Log.d("NewOrin", "AccountActivity图片地址" + pathImage);
+            uploadImage(pathImage);
             account_avatar.setImageBitmap(BitmapFactory.decodeFile(pathImage));
         }
+    }
+
+    /**
+     * 上传用户头像
+     *
+     * @param picPath
+     */
+    private void uploadImage(String picPath) {
+        AppUtil.showProgressDialog(this, "正在上传头像...");
+        if (picPath != null) {
+            final BmobFile bmobFile = new BmobFile(new File(picPath));
+            bmobFile.uploadblock(this, new UploadFileListener() {
+                @Override
+                public void onSuccess() {
+                    AppUtil.showToast(AccountActivity.this, "头像上传成功!");
+                    savePicPathToDB(bmobFile.getFileUrl(AccountActivity.this));
+                }
+
+                @Override
+                public void onFailure(int i, String s) {
+                    AppUtil.showToast(AccountActivity.this, "头像上传失败!" + s);
+                }
+            });
+
+        }
+    }
+
+    private void savePicPathToDB(String picPath) {
+        DataBaseHelper helper = new DataBaseHelper(this);
+        SQLiteDatabase sqLiteDatabase = helper.getWritableDatabase();
+        MyDataBase myDataBase = new MyDataBase(helper, sqLiteDatabase, this);
+        String currentUser = BmobUser.getCurrentUser(this, User.class).getUsername();
+        myDataBase.doUpdateDB(Constant.TABLE_USER, Constant.AVATAR_URL, picPath, Constant.USER_NAME + "=?", new String[]{currentUser});
+        User user = new User();
+        user.setAvatar_url(picPath);
+        SharedPreferencesHelper sharedPreferencesHelper = new SharedPreferencesHelper(this, "userinfo");
+        String objectId = sharedPreferencesHelper.getStringValue(Constant.OBJECT_ID);
+        user.update(this, objectId, new UpdateListener() {
+            @Override
+            public void onSuccess() {
+                Log.d("NewOrin", "服务器头像地址更新成功!");
+            }
+             @Override
+            public void onFailure(int i, String s) {
+                Log.d("NewOrin", "服务器头像地址更新失败!" + s);
+                AppUtil.showToast(AccountActivity.this, "服务器头像地址更新失败!" + s);
+             }
+        });
+        AppUtil.closeProgressDialog();
     }
 }

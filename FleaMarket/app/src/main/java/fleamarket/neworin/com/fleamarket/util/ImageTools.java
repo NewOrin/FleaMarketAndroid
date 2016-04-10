@@ -23,6 +23,7 @@ import android.graphics.RectF;
 import android.graphics.Shader.TileMode;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
+import android.util.Log;
 
 /**
  * Tools for handler picture
@@ -325,9 +326,9 @@ public final class ImageTools {
             if (!dir.exists()) {
                 dir.mkdirs();
             }
-
             File photoFile = new File(path, photoName + ".png");
             FileOutputStream fileOutputStream = null;
+            Log.d("NewOrin", "ImageTools图片路经：" + photoFile.getPath());
             try {
                 fileOutputStream = new FileOutputStream(photoFile);
                 if (photoBitmap != null) {

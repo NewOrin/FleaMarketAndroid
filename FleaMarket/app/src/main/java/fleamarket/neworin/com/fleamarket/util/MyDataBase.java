@@ -4,6 +4,7 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.util.Log;
 
 
 /**
@@ -45,7 +46,13 @@ public class MyDataBase {
     public Cursor doQueryDB(String table, String[] columns, String selection, String[] selectionArgs, String groupBy, String having, String orderBy, String limit) {
         Cursor cursor = mSqLiteDatabase.query(table, columns, selection, selectionArgs, groupBy, having, orderBy, limit);
         if (cursor.moveToFirst()) {
-            return cursor;
+            String url = cursor.getString(cursor.getColumnIndex(columns[0]));
+            Log.d("NewOrin", "查询头像url avatarurl = " + url);
+            if (url == null) {
+                return null;
+            } else {
+                return cursor;
+            }
         }
         return null;
     }
@@ -60,6 +67,13 @@ public class MyDataBase {
         ContentValues cv = new ContentValues();//实例化一个ContentValues用来装载待插入的数据cv.put("password","123456");//添加用户名//实例化一个ContentValues用来装载待插入的数据cv.put("password","123456");//添加用户名
         cv.put(values[0], values[1]);
         mSqLiteDatabase.insert(table, null, cv);
+    }
+
+    public void doInsertDBByInfo(String table, String key, String value) {
+        String sql = "insert into " + table + "(" + key + ") values(?)";
+        mSqLiteDatabase.execSQL(sql, new String[]{value});
+        Log.d("NewOrin", "头像地址插入成功!");
+        mSqLiteDatabase.close();
     }
 
     /**
